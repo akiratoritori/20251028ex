@@ -7,6 +7,17 @@
   <style>
     body { font-family: system-ui, sans-serif; margin: 2rem; line-height: 1.7; }
     .card { max-width: 800px; padding: 1.5rem; border: 1px solid #ddd; border-radius: 12px; }
+    .profile {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .profile img {
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
     .result { margin-top: .5rem; padding: .5rem .75rem; border-radius: .5rem; display: none; }
     .ok { background: #eefaf0; border: 1px solid #bfe5c7; }
     .ng { background: #fff3f0; border: 1px solid #f6c2b6; }
@@ -16,8 +27,17 @@
 <body>
   <div class="card">
     <h1>自己紹介</h1>
-    <p>ここに自己紹介を書きます。例）〇〇です。プログラミング学習中で、将来はWebアプリを作りたいです。</p>
-<img src="シマエナガ飛翔.jpg" alt="関係ないシマエナガ" width="300">
+
+    <!-- ▼ ここが追加部分です ▼ -->
+    <div class="profile">
+      <img src="photo.jpg" alt="自己紹介写真" width="300">
+      <div>
+        <p>こんにちは。〇〇です。現在プログラミングを学習中で、将来的には自分のWebアプリを公開できるようになるのが目標です。</p>
+        <p>趣味は写真・カフェ巡り・旅行などです。よろしくお願いします。</p>
+      </div>
+    </div>
+    <!-- ▲ 追加部分ここまで ▲ -->
+
     <h2>クイズ</h2>
     <form id="quiz">
       <div id="q1">
@@ -41,14 +61,13 @@
   </div>
 
   <script>
-    // ここを書き換えれば設問が増やせます
+    // 設問データ
     const QUESTIONS = [
-      { id: 'q1', answer: 'B' }, // 正解は Python
-      { id: 'q2', answer: 'B' }, // 正解は プログラミング
+      { id: 'q1', answer: 'B' },
+      { id: 'q2', answer: 'B' },
     ];
 
     function grade(){
-      // 未回答チェック
       const unanswered = QUESTIONS.filter(q => !document.querySelector(`input[name="${q.id}"]:checked`));
       const $score = document.getElementById('scoreBox');
       if(unanswered.length){
@@ -63,7 +82,7 @@
         $score.textContent = `未回答が ${unanswered.length} 問あります。全て選んでから再度「採点する」を押してください。`;
         return;
       }
-      // 採点
+
       let correct = 0;
       QUESTIONS.forEach(q => {
         const sel = document.querySelector(`input[name="${q.id}"]:checked`);
@@ -74,6 +93,7 @@
         box.className = 'result ' + (ok ? 'ok' : 'ng');
         box.textContent = ok ? '正解！' : `不正解。正解は ${q.answer} です。`;
       });
+
       $score.style.display = 'block';
       $score.className = 'result ' + (correct === QUESTIONS.length ? 'ok' : 'ng');
       $score.textContent = `スコア：${correct} / ${QUESTIONS.length}`;
